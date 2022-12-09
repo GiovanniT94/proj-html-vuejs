@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>iAcademy - boolean project</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous" />
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js" integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ==" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+</head>
+<body>
+  <div class="vue" id="app">
+    <section class="jumbotron" :style="{'background-image': 'url('+jumbotron[counterJumbotron].src+')'}">
+      <header>
+        <img :src="logoUrl" alt="Logo">
+        <div class="menu">
+          <ul>
+            <li v-for="page in pageMenu">
+              <a v-if="page.name" :href="page.url">{{ page.name }}</a>
+              <a v-if="page.icon" :href="page.url"><i :class="'fas fa-'+page.icon"></i><div class="cart-counter" v-if="page.icon=='shopping-bag'">{{ cartItem }}</div></a>
+            </li>
+          </ul>
+        </div>
+      </header>
+      <h1>{{ jumbotron[counterJumbotron].h1 }}</h1>
+      <div class="description">
+        {{ jumbotron[counterJumbotron].description }}
+      </div>
+      <div class="btn">Register now</div>
+      <div class="slider-menu">
+        <i class="fas fa-circle" v-for="(slide, index) in jumbotron" :class="(index == counterJumbotron) ? 'active' : ''" @click="changeJumbotron(index)"></i>
+      </div>
+    </section>
+    <section class="sector">
+      <div class="container">
+        <div class="card" v-for="sector in sectorMenu">
+          <img :src="'img/h5-custom-icon-'+sector.src+'.png'" alt="Icon">
+          <div class="subject">{{ sector.subject }}</div>
+        </div>
+      </div>
+    </section>
+    <section class="mission">
+      <div class="container">
+        <div class="title">The Trusted Name</div>
+        <div class="title">for In-Home Tutoring.</div>
+        <div class="description">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        </div>
+        <div class="cta">Learn more</div>
+      </div>
+    </section>
+    <section class="photo">
+      <div class="container">
+        <img src="img/h5-img-1.jpg" alt="Guys">
+      </div>
+    </section>
+    <section class="potential">
+      <div class="container">
+        <div class="half">
+          <img src="img/h5-img-2.jpg" alt="Globe and hands">
+        </div>
+        <div class="half">
+          <div class="title">
+            Empowering Children to Reach Their Potential.
+          </div>
+          <div class="description">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+          </div>
+          <div class="stories">
+            <div class="number"></div>
+            <div class="text">User stories</div>
+          </div>
+          <div class="events">
+            <div class="number"></div>
+            <div class="text">Events</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="review">
+      <img :src="reviews[counterReview].src" alt="Author">
+      <div class="text">
+        {{ reviews[counterReview].content }}
+      </div>
+      <div class="name">{{ reviews[counterReview].name }}</div>
+      <div class="role">{{ reviews[counterReview].role }}</div>
+      <div class="review-menu">
+        <i class="fas fa-circle" v-for="(review, index) in reviews" :class="(index == counterReview) ? 'active' : ''" @click="changeReview(index)"></i>
+      </div>
+    </section>
+    <section class="qea">
+      <div class="container">
+        <div class="questions">
+          <ul>
+            <li v-for="(quest, index) in qea" :class="(index == counterQea) ? 'active' : ''" @click="changeQuestion(index)">
+              {{ quest.question }}
+            </li>
+          </ul>
+        </div>
+        <div class="answer">
+          <div class="title">
+            {{ qea[counterQea].answer }}
+          </div>
+          <div class="description">
+            {{ qea[counterQea].text }}
+          </div>
+          <ul>
+            <li v-for="listItem in qea[counterQea].list">
+              <i class="fas fa-check"></i>
+              {{ listItem }}
+            </li>
+          </ul>
+          <img :src="qea[counterQea].src" alt="Icon">
+        </div>
+      </div>
+    </section>
+    <hr>
+    <section class="online">
+      <div class="title">Popular Online Courses</div>
+      <div class="description">
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+      </div>
+      <div class="slide">
+        <img :src="courses[counterCourses*3]" alt="Card">
+        <img :src="courses[counterCourses*3+1]" alt="Card">
+        <img :src="courses[counterCourses*3+2]" alt="Card">
+      </div>
+      <div class="courses-menu">
+        <i class="fas fa-circle" v-for="(course, index) in 3" :class="(index == counterCourses) ? 'active' : ''" @click="changeCourses(index)"></i>
+      </div>
+    </section>
+    <hr>
+    <section class="pricing">
+      <div class="title">Pricing Plans</div>
+      <div class="description">
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th v-for="cell in head">
+              <img v-if="cell.src" :src="cell.src" alt="Icon">
+              {{ cell.title }}
+              <div class="cell-price">{{ cell.price }}</div>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="row in rows">
+            <td v-for="col in columns">
+              <div v-if="row[col] != 'y' && row[col] != 'x' && row[col] != 'btn'">
+                {{row[col]}}
+              </div>
+              <div v-if="row[col] == 'y'">
+                <i class="fas fa-check"></i>
+              </div>
+              <div v-if="row[col] == 'x'">
+                <i class="fas fa-times"></i>
+              </div>
+              <div v-if="row[col] == 'btn'">
+                <div class="btn">Get it now</div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <hr>
+    <section class="client">
+      <img v-for="logo in client" :src="logo" alt="Client">
+    </section>
+    <footer>
+      <div class="container">
+        <div class="menu-left">
+          <div class="menu-col">
+            <img src="img/footer-logo-1.png" alt="Logo">
+            <div class="menu-element">
+              Providing Life Changing Experience Trough Education. Class That Fit Your Busy Life. Closer to Home
+            </div>
+            <div class="menu-element-light">
+              <i class="fas fa-phone-alt"></i>
+              1-667-124-44227
+            </div>
+            <div class="menu-element-light">
+              <i class="far fa-clock"></i>
+              Mon - Sat 8.00 - 18.00
+            </div>
+          </div>
+          <div class="menu-col">
+            <div class="title">Popular Courses</div>
+            <div class="menu-element">Business English</div>
+            <div class="menu-element-small">Preston Marshall</div>
+            <div class="menu-element">Social Computingh</div>
+            <div class="menu-element-small">David Sanders</div>
+            <div class="menu-element">Learn Spanish</div>
+            <div class="menu-element-small">Jennie King</div>
+          </div>
+          <div class="menu-col">
+            <div class="title">Support</div>
+            <div class="menu-element">User dashboard</div>
+            <div class="menu-element">Contact US</div>
+            <div class="menu-element">FAQ</div>
+            <div class="menu-element">Course Offer</div>
+            <div class="menu-element">Events</div>
+          </div>
+        </div>
+        <div class="menu-right">
+          <div class="title">Flexible Learning</div>
+          <img src="img/footer-img-1.png" alt="Globe">
+        </div>
+        <hr>
+        <div class="copy">
+          Copyrights 2021 &copy; Alessandro De Marco - Boolean
+        </div>
+        <div class="contact">
+          <ul>
+            <li>Call +44 300 303 0266</li>
+            <li>Follow us</li>
+            <li><i class="fab fa-twitter"></i></li>
+            <li><i class="fab fa-instagram"></i></li>
+            <li><i class="fab fa-facebook-f"></i></li>
+          </ul>
+        </div>
+      </div>
+    </footer>
+  </div>
+  <div class="back-top" id="top" onclick="topFunction()">Top</div>
+  <script src="js/script.js" charset="utf-8"></script>
+</body>
+</html>
